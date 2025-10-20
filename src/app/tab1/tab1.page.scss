@@ -1,0 +1,67 @@
+.total-gasto-card {
+  background: linear-gradient(135deg, #4a90e2, #007aff);
+  color: white;
+  text-align: center;
+  padding: 20px;
+  border-radius: 10px;
+  margin: 20px;
+}
+
+.total-gasto-header h1 {
+  font-size: 2.5em;
+  margin: 0;
+}
+
+.total-gasto-header p {
+  font-size: 1.2em;
+  margin: 0;
+}
+
+.icono-perfil {
+  font-size: 2em;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  color: white;
+}
+
+.gastos-recientes-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 20px;
+}
+
+.gastos-recientes-header h2 {
+  font-size: 1.5em;
+}
+
+.ver-todos {
+  font-size: 1em;
+  color: #007aff;
+  text-decoration: none;
+}
+
+.gasto-item {
+  border-bottom: 1px solid #e0e0e0;
+  padding: 10px 0;
+}
+
+.gasto-item h3 {
+  font-size: 1.2em;
+  margin: 0;
+}
+
+.gasto-item p {
+  font-size: 0.9em;
+  margin: 0;
+}
+
+ion-note {
+  font-size: 1.2em;
+  font-weight: bold;
+}
+
+.chip-avatar {
+  margin-left: 10px;
+}

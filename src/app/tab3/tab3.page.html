@@ -1,17 +1,70 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>
-      Tab 3
+      Galería de Recibos
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Tab 3</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <div class="galeria-header">
+    <h1>Galería de Recibos</h1>
+    <p>{{ totalRecibos }} recibos registrados</p>
+  </div>
 
-  <app-explore-container name="Tab 3 page"></app-explore-container>
+  <ion-card class="recibos-verificados-card">
+    <ion-card-content>
+      <ion-icon name="checkmark-circle-outline" color="success"></ion-icon>
+      <h2>Recibos Verificados</h2>
+      <p>Todos los gastos incluyen foto del recibo para mayor control</p>
+    </ion-card-content>
+  </ion-card>
+
+  <div class="galeria-recibos" *ngIf="gastos.length > 0; else sinRecibos">
+    <ion-grid>
+      <ion-row>
+        <ion-col size="6" *ngFor="let gasto of gastos">
+          <ion-card class="recibo-card" (click)="abrirFoto(gasto.receiptPhoto)">
+            <ion-card-content>
+              <div class="recibo-imagen">
+                <img [src]="gasto.receiptPhoto" alt="Recibo" class="preview-foto">
+                <ion-icon name="search-outline" class="icono-buscar"></ion-icon>
+              </div>
+              <h3>{{ gasto.descripcion }}</h3>
+              <p>{{ gasto.fecha }}</p>
+              <p class="monto">${{ gasto.monto }}</p>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+
+  <ng-template #sinRecibos>
+    <div style="text-align: center; padding: 40px; color: #9e9e9e;">
+      <ion-icon name="document-outline" style="font-size: 3em; display: block; margin-bottom: 10px;"></ion-icon>
+      <p>No hay recibos registrados aún</p>
+    </div>
+  </ng-template>
+
+  <div class="total-recibos" *ngIf="gastos.length > 0">
+    <h2>{{ totalRecibos }}</h2>
+    <p>Total Recibos</p>
+  </div>
+
+  <ion-modal [isOpen]="modalAbierto" (didDismiss)="cerrarFoto()">
+    <ion-header [translucent]="true">
+      <ion-toolbar>
+        <ion-title>Recibo Completo</ion-title>
+        <ion-buttons slot="end">
+          <ion-button (click)="cerrarFoto()">
+            <ion-icon name="close-outline"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content class="ion-padding">
+      <img *ngIf="fotoSeleccionada" [src]="fotoSeleccionada" alt="Foto completa del recibo" style="width: 100%; border-radius: 10px;">
+    </ion-content>
+  </ion-modal>
 </ion-content>

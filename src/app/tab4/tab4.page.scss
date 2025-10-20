@@ -1,0 +1,100 @@
+.reporte-header {
+  text-align: center;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  color: white;
+  padding: 20px;
+  border-radius: 10px;
+  margin: 20px;
+
+  h1 {
+    font-size: 1.8em;
+    margin: 0;
+  }
+
+  p {
+    font-size: 0.95em;
+    margin: 5px 0 0 0;
+  }
+}
+
+.resumen-gastos {
+  display: flex;
+  justify-content: space-around;
+  margin: 20px;
+  gap: 15px;
+}
+
+.resumen-item {
+  flex: 1;
+  text-align: center;
+  background-color: #f5f5f5;
+  padding: 15px;
+  border-radius: 10px;
+
+  h2 {
+    font-size: 0.9em;
+    color: #666;
+    margin: 0;
+    font-weight: 500;
+  }
+
+  p {
+    font-size: 1.8em;
+    color: #333;
+    margin: 8px 0 0 0;
+    font-weight: bold;
+  }
+}
+
+.gastos-categoria {
+  margin: 20px;
+
+  h2 {
+    font-size: 1.3em;
+    margin-bottom: 15px;
+    color: #333;
+  }
+
+  ion-item {
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    ion-label {
+      flex: 0 0 auto;
+      width: 120px;
+      font-size: 0.95em;
+    }
+
+    ion-progress-bar {
+      flex: 1;
+      height: 6px;
+      margin: 0 10px;
+    }
+
+    p {
+      flex: 0 0 auto;
+      width: 70px;
+      text-align: right;
+      font-weight: bold;
+      color: #007aff;
+      margin: 0;
+      font-size: 0.95em;
+    }
+  }
+}
+
+.periodo-reporte {
+  margin: 20px;
+
+  h2 {
+    font-size: 1.3em;
+    margin-bottom: 15px;
+    color: #333;
+  }
+
+  ion-item {
+    margin-bottom: 10px;
+  }
+}

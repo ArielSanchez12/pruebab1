@@ -1,0 +1,57 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>
+      Reporte Mensual
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div class="reporte-header">
+    <h1>Reporte Mensual</h1>
+    <p>{{ mesActual | titlecase }}</p>
+  </div>
+
+  <div class="resumen-gastos">
+    <div class="resumen-item">
+      <h2>Total Gastos</h2>
+      <p>${{ totalGastos.toFixed(2) }}</p>
+    </div>
+    <div class="resumen-item">
+      <h2>Promedio/día</h2>
+      <p>${{ promedioDaily.toFixed(2) }}</p>
+    </div>
+  </div>
+
+  <div class="gastos-categoria">
+    <h2>Gastos por Categoría</h2>
+    <ion-item *ngFor="let categoria of categoriasArray">
+      <ion-label>{{ categoria.nombre }}</ion-label>
+      <ion-progress-bar 
+        [value]="calcularPorcentajeBarra(categoria.total)" 
+        [color]="categoria.color">
+      </ion-progress-bar>
+      <p slot="end">${{ categoria.total.toFixed(2) }}</p>
+    </ion-item>
+  </div>
+
+  <div class="periodo-reporte">
+    <h2>Período del Reporte</h2>
+    <ion-item>
+      <ion-label>Desde</ion-label>
+      <ion-datetime 
+        displayFormat="DD/MM/YYYY" 
+        [value]="fechaInicio"
+        (ionChange)="onFechaInicioChange($event)">
+      </ion-datetime>
+    </ion-item>
+    <ion-item>
+      <ion-label>Hasta</ion-label>
+      <ion-datetime 
+        displayFormat="DD/MM/YYYY" 
+        [value]="fechaFin"
+        (ionChange)="onFechaFinChange($event)">
+      </ion-datetime>
+    </ion-item>
+  </div>
+</ion-content>

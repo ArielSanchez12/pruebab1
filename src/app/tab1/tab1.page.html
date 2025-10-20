@@ -1,17 +1,67 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>
-      Tab 1
+      Inicio
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Tab 1</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <ion-card class="total-gasto-card">
+    <ion-card-content>
+      <div class="total-gasto-header">
+        <h1>${{ totalGastado.toFixed(2) }}</h1>
+        <p>{{ mesActual | titlecase }}</p>
+      </div>
+      <ion-icon name="person-circle-outline" class="icono-perfil"></ion-icon>
+    </ion-card-content>
+  </ion-card>
 
-  <app-explore-container name="Tab 1 page"></app-explore-container>
+  <div class="gastos-recientes-header">
+    <h2>Gastos Recientes</h2>
+    <a href="#" class="ver-todos">Ver todos</a>
+  </div>
+
+  <ion-list *ngIf="gastos.length > 0; else sinGastos">
+    <ion-item class="gasto-item" *ngFor="let gasto of gastos">
+      <ion-label>
+        <h3>{{ gasto.descripcion }}</h3>
+        <p>Pagado por {{ gasto.usuario }}</p>
+        <p>{{ gasto.fecha }}</p>
+      </ion-label>
+      <ion-note slot="end" color="primary">${{ gasto.monto }}</ion-note>
+      <ion-chip slot="end" class="chip-avatar">
+        <ion-label>{{ obtenerIniciales(gasto.usuario) }}</ion-label>
+      </ion-chip>
+      <ion-icon name="checkmark-circle-outline" slot="end" color="success"></ion-icon>
+    </ion-item>
+  </ion-list>
+
+  <ng-template #sinGastos>
+    <div style="text-align: center; padding: 40px; color: #9e9e9e;">
+      <ion-icon name="wallet-outline" style="font-size: 3em; display: block; margin-bottom: 10px;"></ion-icon>
+      <p>No hay gastos registrados aún</p>
+    </div>
+  </ng-template>
+
+  <ion-tabs>
+    <ion-tab-bar slot="bottom">
+      <ion-tab-button tab="inicio">
+        <ion-icon name="home-outline"></ion-icon>
+        <ion-label>Inicio</ion-label>
+      </ion-tab-button>
+      <ion-tab-button tab="balance">
+        <ion-icon name="stats-chart-outline"></ion-icon>
+        <ion-label>Balance</ion-label>
+      </ion-tab-button>
+      <ion-tab-button tab="recibos">
+        <ion-icon name="receipt-outline"></ion-icon>
+        <ion-label>Recibos</ion-label>
+      </ion-tab-button>
+      <ion-tab-button tab="reporte">
+        <ion-icon name="document-text-outline"></ion-icon>
+        <ion-label>Reporte</ion-label>
+      </ion-tab-button>
+    </ion-tab-bar>
+  </ion-tabs>
 </ion-content>

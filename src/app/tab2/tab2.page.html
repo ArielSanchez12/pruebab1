@@ -1,17 +1,98 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>
-      Tab 2
+      Nuevo Gasto
     </ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="descargarDetalles()" color="primary">
+        <ion-icon slot="icon-only" name="download-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Tab 2</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <form class="nuevo-gasto-form">
 
-  <app-explore-container name="Tab 2 page"></app-explore-container>
+    <ion-item>
+      <ion-label position="floating">Descripción</ion-label>
+      <ion-input 
+        placeholder="Ej: Cena con amigos"
+        [(ngModel)]="nombreGasto"
+        name="descripcion">
+      </ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Monto</ion-label>
+      <ion-input 
+        type="number" 
+        placeholder="$ 0.00"
+        [(ngModel)]="montoGasto"
+        name="monto">
+      </ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">¿Quién pagó?</ion-label>
+      <ion-select 
+        placeholder="Seleccionar persona"
+        [(ngModel)]="quienPago"
+        name="usuario">
+        <ion-select-option *ngFor="let nombre of listaNombres" [value]="nombre">
+          {{ nombre }}
+        </ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <div class="participantes">
+      <h3>Participantes</h3>
+      <ion-chip 
+        *ngFor="let nombre of listaNombres"
+        [color]="participantesSeleccionados.includes(nombre) ? 'primary' : 'light'"
+        (click)="alternParticipante(nombre)">
+        <ion-label>{{ nombre }}</ion-label>
+      </ion-chip>
+    </div>
+
+    <div class="foto-recibo">
+      <h3>Foto del Recibo <span class="obligatorio">* Obligatorio</span></h3>
+      
+      <div class="foto-recibo-container">
+        <div *ngIf="fotoCapturada" class="foto-preview">
+          <img [src]="fotoRecibo" alt="Preview del recibo" class="foto-imagen">
+          <div class="overlay-foto">
+            <ion-button 
+              size="small" 
+              fill="clear" 
+              (click)="capturarFoto()">
+              <ion-icon slot="start" name="camera-outline"></ion-icon>
+              Cambiar foto
+            </ion-button>
+          </div>
+        </div>
+
+        <ion-fab *ngIf="!fotoCapturada" class="camera-fab" vertical="center" horizontal="center">
+          <ion-fab-button (click)="capturarFoto()" color="primary">
+            <ion-icon name="camera"></ion-icon>
+          </ion-fab-button>
+        </ion-fab>
+
+        <div *ngIf="!fotoCapturada" class="foto-recibo-placeholder">
+          <p style="margin-top: 20px;">Toca el botón para tomar la foto del recibo</p>
+          <p class="nota">Es necesario para registrar el gasto</p>
+        </div>
+      </div>
+    </div>
+
+    <ion-button 
+      expand="block" 
+      color="primary"
+      (click)="registrarGasto()">
+      <ion-icon slot="start" name="save-outline"></ion-icon>
+      Guardar Gasto con Recibo
+    </ion-button>
+
+    <p class="nota-final">Todos los gastos deben incluir foto del recibo</p>
+  </form>
 </ion-content>
