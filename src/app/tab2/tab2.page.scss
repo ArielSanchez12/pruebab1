@@ -1,127 +1,165 @@
+/* filepath: c:\movilas25b\pruebab1\src\app\tab2\tab2.page.scss */
 .nuevo-gasto-form {
-  margin: 20px;
-  padding-bottom: 80px;
-}
+  padding: 20px;
+  padding-bottom: 100px;
 
-ion-item {
-  margin-bottom: 15px;
-}
-
-.participantes {
-  margin: 20px 0;
-
-  h3 {
-    font-size: 1.2em;
-    margin-bottom: 10px;
+  ion-item {
+    --padding-start: 0;
+    --inner-padding-end: 0;
+    margin-bottom: 16px;
+    border-radius: 8px;
+    --background: var(--ion-color-light);
   }
 
-  ion-chip {
-    margin-right: 10px;
-  }
-}
-
-.foto-recibo {
-  margin: 20px 0;
-  text-align: center;
-
-  h3 {
-    font-size: 1.2em;
-    margin-bottom: 15px;
-
-    .obligatorio {
-      color: #e74c3c;
-      font-size: 0.9em;
-    }
-  }
-}
-
-.foto-recibo-container {
-  position: relative;
-  min-height: 300px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 10px;
-  background-color: #f9f9f9;
-  margin-bottom: 20px;
-}
-
-.foto-preview {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  border-radius: 10px;
-  overflow: hidden;
-
-  .foto-imagen {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-  }
-
-  .overlay-foto {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
-    padding: 20px 10px 10px;
+  .fecha-seleccionada {
     display: flex;
-    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 16px;
+    background: var(--ion-color-primary-tint);
+    color: var(--ion-color-primary-contrast);
+    border-radius: 8px;
+    margin-bottom: 20px;
+    font-size: 0.95em;
 
-    ion-button {
-      --color: white;
+    ion-icon {
+      font-size: 1.2em;
+    }
+
+    span {
+      text-transform: capitalize;
     }
   }
-}
 
-.camera-fab {
-  z-index: 1000;
+  .participantes {
+    margin: 24px 0;
+    
+    h3 {
+      font-size: 1.1em;
+      color: var(--ion-color-dark);
+      margin-bottom: 12px;
+    }
 
-  ion-fab-button {
-    --border-radius: 50%;
-    --box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
-    --width: 70px;
-    --height: 70px;
-    font-size: 32px;
+    ion-chip {
+      margin: 4px;
+      cursor: pointer;
+      transition: transform 0.2s ease;
 
-    &:hover {
-      --box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+      &:hover {
+        transform: scale(1.05);
+      }
     }
   }
-}
 
-.foto-recibo-placeholder {
-  border: 2px dashed #e0e0e0;
-  padding: 40px 20px;
-  border-radius: 10px;
-  background-color: #fafafa;
-  width: 100%;
+  .foto-recibo {
+    margin: 24px 0;
 
-  p {
-    margin: 5px 0;
-    color: #666;
+    h3 {
+      font-size: 1.1em;
+      color: var(--ion-color-dark);
+      margin-bottom: 12px;
+
+      .obligatorio {
+        color: var(--ion-color-danger);
+        font-size: 0.85em;
+        font-weight: normal;
+      }
+    }
+
+    .foto-recibo-container {
+      position: relative;
+      width: 100%;
+      min-height: 250px;
+      border: 2px dashed var(--ion-color-medium);
+      border-radius: 12px;
+      background-color: var(--ion-color-light);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+
+      .foto-preview {
+        position: relative;
+        width: 100%;
+        height: 250px;
+
+        .foto-imagen {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          border-radius: 12px;
+        }
+
+        .overlay-foto {
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background: rgba(0, 0, 0, 0.5);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          border-radius: 12px;
+          opacity: 0;
+          transition: opacity 0.3s ease;
+
+          ion-button {
+            --color: white;
+          }
+        }
+
+        &:hover .overlay-foto {
+          opacity: 1;
+        }
+      }
+
+      .camera-fab {
+        position: absolute;
+      }
+
+      .foto-recibo-placeholder {
+        text-align: center;
+        color: var(--ion-color-medium);
+        
+        p {
+          margin: 8px 0;
+        }
+
+        .nota {
+          font-size: 0.85em;
+        }
+      }
+    }
   }
 
-  .nota {
-    font-size: 0.9em;
-    color: #9e9e9e;
+  ion-button {
+    margin-top: 24px;
+    font-weight: 600;
+  }
+
+  .nota-final {
+    text-align: center;
+    font-size: 0.85em;
+    color: var(--ion-color-medium);
+    margin-top: 12px;
   }
 }
 
-.nota {
-  font-size: 0.9em;
-  color: #9e9e9e;
-}
+@media (max-width: 575px) {
+  .nuevo-gasto-form {
+    padding: 12px;
 
-.nota-final {
-  text-align: center;
-  font-size: 0.9em;
-  color: #9e9e9e;
-  margin-top: 10px;
-}
+    .foto-recibo-container {
+      min-height: 200px;
 
-ion-button {
-  margin-top: 20px;
+      .foto-preview {
+        height: 200px;
+      }
+
+      .overlay-foto {
+        opacity: 1 !important;
+      }
+    }
+  }
 }

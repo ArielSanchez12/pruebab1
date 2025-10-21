@@ -1,67 +1,253 @@
 .total-gasto-card {
-  background: linear-gradient(135deg, #4a90e2, #007aff);
-  color: white;
-  text-align: center;
-  padding: 20px;
-  border-radius: 10px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: rgb(255, 255, 255);
   margin: 20px;
-}
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  position: relative;
+  overflow: hidden;
 
-.total-gasto-header h1 {
-  font-size: 2.5em;
-  margin: 0;
-}
+  ion-card-content {
+    padding: 30px 20px;
+  }
 
-.total-gasto-header p {
-  font-size: 1.2em;
-  margin: 0;
-}
+  .total-gasto-header {
+    h1 {
+      font-size: 3em;
+      margin: 0;
+      font-weight: bold;
+    }
 
-.icono-perfil {
-  font-size: 2em;
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  color: white;
+    p {
+      margin: 5px 0 0 0;
+      font-size: 1em;
+      opacity: 0.9;
+    }
+  }
+
+  .icono-perfil {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    font-size: 3em;
+    opacity: 0.3;
+  }
 }
 
 .gastos-recientes-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 20px;
+  padding: 20px 20px 10px 20px;
+
+  h2 {
+    font-size: 1.3em;
+    margin: 0;
+    color: var(--ion-color-dark);
+  }
+
+  .ver-todos {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    color: var(--ion-color-primary);
+    text-decoration: none;
+    font-size: 0.9em;
+    font-weight: 500;
+    transition: opacity 0.2s ease;
+
+    &:hover {
+      opacity: 0.8;
+      text-decoration: underline;
+    }
+    
+    &:active {
+      opacity: 0.6;
+    }
+
+    ion-icon {
+      font-size: 1.2em;
+    }
+  }
 }
 
-.gastos-recientes-header h2 {
-  font-size: 1.5em;
+ion-list {
+  background: transparent;
+  padding: 0 10px 100px 10px;
+
+  .gasto-item {
+    --padding-start: 16px;
+    --padding-end: 16px;
+    --inner-padding-end: 0;
+    margin-bottom: 12px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    --background: linear-gradient(135deg, #85868a 0%, #38343b 100%);
+    display: flex;
+    align-items: center;
+
+    .gasto-info {
+      flex: 1;
+      min-width: 0;
+
+      ion-label {
+        h3 {
+          font-size: 1.1em;
+          font-weight: 600;
+          color: black;
+          margin: 0 0 6px 0;
+        }
+
+        .pagado-por {
+          font-size: 0.85em;
+          color: white;
+          margin: 0 0 4px 0;
+        }
+
+        .fecha {
+          font-size: 0.8em;
+          color: white;
+          margin: 0 0 8px 0;
+        }
+
+        .participantes-container {
+          display: flex;
+          gap: 6px;
+          flex-wrap: wrap;
+          margin-top: 8px;
+
+          .chip-participante {
+            height: 28px;
+            min-width: 28px;
+            padding: 0;
+            border-radius: 50%;
+            font-size: 0.75em;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: black;
+            background-color: white;
+
+            ion-label {
+              margin: 0;
+              padding: 0 8px;
+            }
+          }
+        }
+      }
+    }
+
+    .gasto-derecha {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-left: 12px;
+
+      .recibo-thumbnail {
+        --size: 50px;
+        --border-radius: 8px;
+        width: 50px;
+        height: 50px;
+        flex-shrink: 0;
+        border: 2px solid var(--ion-color-light);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+        img {
+          object-fit: cover;
+          width: 100%;
+          height: 100%;
+          border-radius: 6px;
+        }
+      }
+
+      .monto-info {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 4px;
+
+        .monto {
+          font-size: 1.3em;
+          font-weight: bold;
+          color: var(--ion-color-primary);
+        }
+
+        .verificado {
+          display: flex;
+          align-items: center;
+          gap: 4px;
+          font-size: 0.7em;
+          color: var(--ion-color-success);
+          margin: 0;
+          white-space: nowrap;
+
+          ion-icon {
+            font-size: 1.2em;
+          }
+        }
+      }
+    }
+  }
 }
 
-.ver-todos {
-  font-size: 1em;
-  color: #007aff;
-  text-decoration: none;
-}
+@media (max-width: 575px) {
+  .total-gasto-card {
+    margin: 12px;
 
-.gasto-item {
-  border-bottom: 1px solid #e0e0e0;
-  padding: 10px 0;
-}
+    .total-gasto-header h1 {
+      font-size: 2.5em;
+    }
+  }
 
-.gasto-item h3 {
-  font-size: 1.2em;
-  margin: 0;
-}
+  .gastos-recientes-header {
+    padding: 16px 16px 8px 16px;
 
-.gasto-item p {
-  font-size: 0.9em;
-  margin: 0;
-}
+    h2 {
+      font-size: 1.1em;
+    }
 
-ion-note {
-  font-size: 1.2em;
-  font-weight: bold;
-}
+    .ver-todos {
+      font-size: 0.8em;
+    }
+  }
 
-.chip-avatar {
-  margin-left: 10px;
+  ion-list {
+    padding: 0 8px 100px 8px;
+
+    .gasto-item {
+      flex-wrap: nowrap;
+
+      .gasto-info ion-label {
+        h3 {
+          font-size: 1em;
+        }
+
+        .pagado-por,
+        .fecha {
+          font-size: 0.75em;
+        }
+      }
+
+      .gasto-derecha {
+        gap: 8px;
+
+        .recibo-thumbnail {
+          --size: 40px;
+          width: 40px;
+          height: 40px;
+        }
+
+        .monto-info {
+          .monto {
+            font-size: 1.1em;
+          }
+
+          .verificado {
+            font-size: 0.65em;
+          }
+        }
+      }
+    }
+  }
 }

@@ -12,6 +12,52 @@
     <p>{{ mesActual | titlecase }}</p>
   </div>
 
+  <!-- Selector de fechas compacto -->
+  <div class="periodo-reporte">
+    <h2>Período del Reporte</h2>
+    <div class="fecha-selectores">
+      <div class="fecha-item">
+        <ion-label>Desde</ion-label>
+        <ion-datetime-button datetime="datetime-inicio"></ion-datetime-button>
+      </div>
+      <div class="fecha-item">
+        <ion-label>Hasta</ion-label>
+        <ion-datetime-button datetime="datetime-fin"></ion-datetime-button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modales para los datepickers -->
+  <ion-modal [keepContentsMounted]="true">
+    <ng-template>
+      <ion-datetime
+        id="datetime-inicio"
+        presentation="date"
+        [value]="fechaInicio"
+        (ionChange)="onFechaInicioChange($event)"
+        [showDefaultButtons]="true"
+        doneText="Confirmar"
+        cancelText="Cancelar"
+        size="cover">
+      </ion-datetime>
+    </ng-template>
+  </ion-modal>
+
+  <ion-modal [keepContentsMounted]="true">
+    <ng-template>
+      <ion-datetime
+        id="datetime-fin"
+        presentation="date"
+        [value]="fechaFin"
+        (ionChange)="onFechaFinChange($event)"
+        [showDefaultButtons]="true"
+        doneText="Confirmar"
+        cancelText="Cancelar"
+        size="cover">
+      </ion-datetime>
+    </ng-template>
+  </ion-modal>
+
   <div class="resumen-gastos">
     <div class="resumen-item">
       <h2>Total Gastos</h2>
@@ -26,32 +72,14 @@
   <div class="gastos-categoria">
     <h2>Gastos por Categoría</h2>
     <ion-item *ngFor="let categoria of categoriasArray">
-      <ion-label>{{ categoria.nombre }}</ion-label>
-      <ion-progress-bar 
-        [value]="calcularPorcentajeBarra(categoria.total)" 
-        [color]="categoria.color">
-      </ion-progress-bar>
+      <ion-label>
+        <h3>{{ categoria.nombre }}</h3>
+        <ion-progress-bar 
+          [value]="calcularPorcentajeBarra(categoria.total)" 
+          [color]="categoria.color">
+        </ion-progress-bar>
+      </ion-label>
       <p slot="end">${{ categoria.total.toFixed(2) }}</p>
-    </ion-item>
-  </div>
-
-  <div class="periodo-reporte">
-    <h2>Período del Reporte</h2>
-    <ion-item>
-      <ion-label>Desde</ion-label>
-      <ion-datetime 
-        displayFormat="DD/MM/YYYY" 
-        [value]="fechaInicio"
-        (ionChange)="onFechaInicioChange($event)">
-      </ion-datetime>
-    </ion-item>
-    <ion-item>
-      <ion-label>Hasta</ion-label>
-      <ion-datetime 
-        displayFormat="DD/MM/YYYY" 
-        [value]="fechaFin"
-        (ionChange)="onFechaFinChange($event)">
-      </ion-datetime>
     </ion-item>
   </div>
 </ion-content>

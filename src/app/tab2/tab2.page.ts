@@ -1,5 +1,24 @@
 import { Component } from '@angular/core';
-import { IonHeader,IonToolbar,IonTitle,IonContent,IonButtons,IonButton,IonIcon,IonItem,IonLabel,IonInput,IonSelect,IonSelectOption,IonChip,IonFab,IonFabButton} from '@ionic/angular/standalone';
+import { 
+  IonHeader,
+  IonToolbar,
+  IonTitle,
+  IonContent,
+  IonButtons,
+  IonButton,
+  IonIcon,
+  IonItem,
+  IonLabel,
+  IonInput,
+  IonSelect,
+  IonSelectOption,
+  IonChip,
+  IonFab,
+  IonFabButton,
+  IonDatetime,
+  IonModal,
+  IonDatetimeButton
+} from '@ionic/angular/standalone';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { PhotoService } from '../services/photo';
@@ -8,7 +27,28 @@ import { PhotoService } from '../services/photo';
   selector: 'app-tab2',
   templateUrl: 'tab2.page.html',
   styleUrls: ['tab2.page.scss'],
-  imports: [IonHeader,IonToolbar,IonTitle,IonContent,IonButtons,IonButton,IonIcon,IonItem,IonLabel,IonInput,IonSelect,IonSelectOption,IonChip,IonFab,IonFabButton,CommonModule,FormsModule]
+  imports: [
+    IonHeader,
+    IonToolbar,
+    IonTitle,
+    IonContent,
+    IonButtons,
+    IonButton,
+    IonIcon,
+    IonItem,
+    IonLabel,
+    IonInput,
+    IonSelect,
+    IonSelectOption,
+    IonChip,
+    IonFab,
+    IonFabButton,
+    IonDatetime,
+    IonModal,
+    IonDatetimeButton,
+    CommonModule,
+    FormsModule
+  ]
 })
 export class Tab2Page {
   nombreGasto: string = '';
@@ -18,11 +58,32 @@ export class Tab2Page {
   participantesSeleccionados: string[] = [];
   fotoRecibo: string | null = null;
   fotoCapturada: boolean = false;
+  fechaGasto: string = new Date().toISOString();
+  fechaFormateada: string = '';
 
-  constructor(public photoService: PhotoService) { }
+  constructor(public photoService: PhotoService) {
+    this.actualizarFechaFormateada();
+  }
 
   ionViewWillEnter() {
     this.cargarFotoCapturada();
+  }
+
+  // Actualizar la fecha formateada cuando cambia
+  onFechaChange(event: any) {
+    this.fechaGasto = event.detail.value;
+    this.actualizarFechaFormateada();
+  }
+
+  // Formatear la fecha para mostrarla
+  actualizarFechaFormateada() {
+    const fecha = new Date(this.fechaGasto);
+    this.fechaFormateada = fecha.toLocaleDateString('es-ES', {
+      weekday: 'long',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
   }
 
   alternParticipante(nombre: string) {
@@ -59,30 +120,39 @@ export class Tab2Page {
       return;
     }
 
+    // Formatear fecha para guardar
+    const fechaSeleccionada = new Date(this.fechaGasto);
+    const fechaGuardar = fechaSeleccionada.toLocaleDateString('es-ES', { 
+      day: '2-digit', 
+      month: 'short',
+      year: 'numeric'
+    });
+
     const gastoNuevo = {
       descripcion: this.nombreGasto,
       monto: this.montoGasto,
       usuario: this.quienPago,
       participantes: this.participantesSeleccionados.length > 0 ? this.participantesSeleccionados : [this.quienPago],
-      fecha: new Date().toLocaleDateString('es-ES', { day: '2-digit', month: 'short' }),
+      fecha: fechaGuardar,
+      fechaISO: this.fechaGasto,
       receiptPhoto: this.fotoRecibo
     };
 
     try {
-      // guardar en localStorage
+      // Guardar en localStorage
       const gastosExistentes = JSON.parse(localStorage.getItem('gastos') || '[]');
       gastosExistentes.push(gastoNuevo);
       localStorage.setItem('gastos', JSON.stringify(gastosExistentes));
 
-      // guardar detalles en el txt
+      // Guardar detalles en el txt
       await this.photoService.guardarDetalleGasto(
         this.nombreGasto,
         this.montoGasto,
         this.quienPago,
-        gastoNuevo.fecha
+        fechaGuardar
       );
 
-      // limpiar formulario
+      // Limpiar formulario
       this.limpiarFormulario();
       alert('Gasto registrado exitosamente');
     } catch (error) {
@@ -108,6 +178,8 @@ export class Tab2Page {
     this.participantesSeleccionados = [];
     this.fotoRecibo = null;
     this.fotoCapturada = false;
+    this.fechaGasto = new Date().toISOString();
+    this.actualizarFechaFormateada();
     
     if (this.photoService.photos.length > 0) {
       await this.photoService.deletePhoto(0);

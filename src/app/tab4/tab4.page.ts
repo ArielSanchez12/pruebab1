@@ -1,5 +1,17 @@
 import { Component } from '@angular/core';
-import { IonHeader, IonToolbar, IonTitle, IonContent, IonItem, IonLabel, IonProgressBar, IonDatetime } from '@ionic/angular/standalone';
+import { 
+  IonHeader, 
+  IonToolbar, 
+  IonTitle, 
+  IonContent, 
+  IonItem, 
+  IonLabel, 
+  IonProgressBar, 
+  IonDatetime,
+  IonDatetimeButton,
+  IonModal,
+  IonIcon
+} from '@ionic/angular/standalone';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
@@ -7,10 +19,25 @@ import { FormsModule } from '@angular/forms';
   selector: 'app-tab4',
   templateUrl: 'tab4.page.html',
   styleUrls: ['tab4.page.scss'],
-  imports: [IonHeader, IonToolbar, IonTitle, IonContent, IonItem, IonLabel, IonProgressBar, IonDatetime,CommonModule,FormsModule],
+  imports: [
+    IonHeader, 
+    IonToolbar, 
+    IonTitle, 
+    IonContent, 
+    IonItem, 
+    IonLabel, 
+    IonProgressBar, 
+    IonDatetime,
+    IonDatetimeButton,
+    IonModal,
+    IonIcon,
+    CommonModule,
+    FormsModule
+  ],
 })
 export class Tab4Page {
   gastos: any[] = [];
+  gastosFiltrados: any[] = [];
   totalGastos: number = 0;
   promedioDaily: number = 0;
   mesActual: string = '';
@@ -42,28 +69,67 @@ export class Tab4Page {
   categoriasArray: any[] = [];
 
   ionViewWillEnter() {
+    this.inicializarFechas();
     this.cargarReporte();
+  }
+
+  inicializarFechas() {
+    const hoy = new Date();
+    const primerDia = new Date(hoy.getFullYear(), hoy.getMonth(), 1);
+    
+    this.fechaInicio = primerDia.toISOString();
+    this.fechaFin = hoy.toISOString();
+    
+    this.mesActual = hoy.toLocaleDateString('es-ES', { month: 'long', year: 'numeric' });
   }
 
   cargarReporte() {
     this.gastos = JSON.parse(localStorage.getItem('gastos') || '[]');
-    this.mesActual = new Date().toLocaleDateString('es-ES', { month: 'long', year: 'numeric' });
-    
-    // Establecer fechas por defecto
-    const hoy = new Date();
-    const primerDia = new Date(hoy.getFullYear(), hoy.getMonth(), 1);
-    
-    this.fechaInicio = this.formatearFecha(primerDia);
-    this.fechaFin = this.formatearFecha(hoy);
-
+    this.filtrarGastosPorFecha();
     this.calcularTotales();
     this.clasificarGastos();
     this.calcularPromedios();
     this.construirArrayCategorias();
   }
 
+  filtrarGastosPorFecha() {
+    const inicio = new Date(this.fechaInicio);
+    const fin = new Date(this.fechaFin);
+    
+    inicio.setHours(0, 0, 0, 0);
+    fin.setHours(23, 59, 59, 999);
+
+    this.gastosFiltrados = this.gastos.filter(gasto => {
+      let fechaGasto: Date;
+      
+      if (gasto.fechaISO) {
+        fechaGasto = new Date(gasto.fechaISO);
+      } else if (gasto.fecha) {
+        fechaGasto = this.parsearFechaEspanol(gasto.fecha);
+      } else {
+        fechaGasto = new Date();
+      }
+
+      return fechaGasto >= inicio && fechaGasto <= fin;
+    });
+  }
+
+  parsearFechaEspanol(fechaStr: string): Date {
+    const meses: { [key: string]: number } = {
+      'ene': 0, 'feb': 1, 'mar': 2, 'abr': 3, 'may': 4, 'jun': 5,
+      'jul': 6, 'ago': 7, 'sep': 8, 'oct': 9, 'nov': 10, 'dic': 11
+    };
+
+    const partes = fechaStr.toLowerCase().split(' ');
+    const dia = parseInt(partes[0]);
+    const mes = meses[partes[1]] || 0;
+    const año = partes[2] ? parseInt(partes[2]) : new Date().getFullYear();
+
+    return new Date(año, mes, dia);
+  }
+
   calcularTotales() {
-    this.totalGastos = this.gastos.reduce((suma, gasto) => suma + Number(gasto.monto), 0);
+    this.totalGastos = this.gastosFiltrados.reduce((suma, gasto) => suma + Number(gasto.monto), 0);
   }
 
   clasificarGastos() {
@@ -71,7 +137,7 @@ export class Tab4Page {
     this.categorias.restaurantes.total = 0;
     this.categorias.transporte.total = 0;
 
-    this.gastos.forEach(gasto => {
+    this.gastosFiltrados.forEach(gasto => {
       const descripcion = gasto.descripcion.toLowerCase();
       const monto = Number(gasto.monto);
 
@@ -92,13 +158,16 @@ export class Tab4Page {
   }
 
   calcularPromedios() {
-    const diasDelMes = this.obtenerDiasDelMes();
-    this.promedioDaily = this.totalGastos > 0 ? this.totalGastos / diasDelMes : 0;
+    const diasEnRango = this.calcularDiasEnRango();
+    this.promedioDaily = this.totalGastos > 0 ? this.totalGastos / diasEnRango : 0;
   }
 
-  obtenerDiasDelMes(): number {
-    const hoy = new Date();
-    return hoy.getDate();
+  calcularDiasEnRango(): number {
+    const inicio = new Date(this.fechaInicio);
+    const fin = new Date(this.fechaFin);
+    const diferencia = fin.getTime() - inicio.getTime();
+    const dias = Math.ceil(diferencia / (1000 * 60 * 60 * 24)) + 1;
+    return dias > 0 ? dias : 1;
   }
 
   construirArrayCategorias() {
@@ -113,18 +182,21 @@ export class Tab4Page {
     return this.totalGastos > 0 ? monto / this.totalGastos : 0;
   }
 
-  formatearFecha(fecha: Date): string {
-    const dia = String(fecha.getDate()).padStart(2, '0');
-    const mes = String(fecha.getMonth() + 1).padStart(2, '0');
-    const año = fecha.getFullYear();
-    return `${año}-${mes}-${dia}`;
-  }
-
   onFechaInicioChange(event: any) {
     this.fechaInicio = event.detail.value;
+    this.actualizarReporte();
   }
 
   onFechaFinChange(event: any) {
     this.fechaFin = event.detail.value;
+    this.actualizarReporte();
+  }
+
+  actualizarReporte() {
+    this.filtrarGastosPorFecha();
+    this.calcularTotales();
+    this.clasificarGastos();
+    this.calcularPromedios();
+    this.construirArrayCategorias();
   }
 }

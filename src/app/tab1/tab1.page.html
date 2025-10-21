@@ -24,16 +24,37 @@
 
   <ion-list *ngIf="gastos.length > 0; else sinGastos">
     <ion-item class="gasto-item" *ngFor="let gasto of gastos">
-      <ion-label>
-        <h3>{{ gasto.descripcion }}</h3>
-        <p>Pagado por {{ gasto.usuario }}</p>
-        <p>{{ gasto.fecha }}</p>
-      </ion-label>
-      <ion-note slot="end" color="primary">${{ gasto.monto }}</ion-note>
-      <ion-chip slot="end" class="chip-avatar">
-        <ion-label>{{ obtenerIniciales(gasto.usuario) }}</ion-label>
-      </ion-chip>
-      <ion-icon name="checkmark-circle-outline" slot="end" color="success"></ion-icon>
+      <div class="gasto-info">
+        <ion-label>
+          <h3>{{ gasto.descripcion }}</h3>
+          <p class="pagado-por">Pagado por {{ gasto.usuario }}</p>
+          <p class="fecha">{{ gasto.fecha }}</p>
+          
+          <!-- Burbujas de participantes -->
+          <div class="participantes-container">
+            <ion-chip 
+              *ngFor="let participante of gasto.participantes" 
+              [color]="obtenerColorParticipante(participante)"
+              class="chip-participante">
+              <ion-label>{{ obtenerIniciales(participante) }}</ion-label>
+            </ion-chip>
+          </div>
+        </ion-label>
+      </div>
+
+      <!-- Información derecha: foto y monto -->
+      <div class="gasto-derecha" slot="end">
+        <ion-thumbnail class="recibo-thumbnail" *ngIf="gasto.receiptPhoto">
+          <img [src]="gasto.receiptPhoto" alt="Recibo">
+        </ion-thumbnail>
+        <div class="monto-info">
+          <ion-note color="primary" class="monto">${{ gasto.monto }}</ion-note>
+          <p class="verificado">
+            <ion-icon name="checkmark-circle" color="success"></ion-icon>
+            Recibo verificado
+          </p>
+        </div>
+      </div>
     </ion-item>
   </ion-list>
 
